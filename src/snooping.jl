@@ -1,6 +1,6 @@
 
 
-function snoop(package, tomlpath, snoopfile, outputfile, reuse = false, blacklist = [])
+function snoop(package, tomlpath, snoopfile, outputfile, reuse = false, blacklist = [], fail_on_error = true)
 
     command = """
     using Pkg, PackageCompiler
@@ -22,7 +22,11 @@ function snoop(package, tomlpath, snoopfile, outputfile, reuse = false, blacklis
     try
         include($(repr(snoopfile)))
     catch e
-        @warn("Snoop file errored. Precompile statements were recorded untill error!", exception = e)
+        if fail_on_error
+            rethrow()
+        else
+            @warn("Snoop file errored. Precompile statements were recorded untill error!", exception = e)
+        end
     end
     """
 
