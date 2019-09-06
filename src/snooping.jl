@@ -22,7 +22,7 @@ function snoop(package, tomlpath, snoopfile, outputfile, reuse = false, blacklis
     try
         include($(repr(snoopfile)))
     catch e
-        if fail_on_error
+        if $fail_on_error
             rethrow()
         else
             @warn("Snoop file errored. Precompile statements were recorded untill error!", exception = e)
