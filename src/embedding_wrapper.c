@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
 
     // JULIAC_PROGRAM_LIBNAME defined on command-line for compilation
     jl_options.image_file = JULIAC_PROGRAM_LIBNAME;
+    jl_options.opt_level = 1;
     julia_init(JL_IMAGE_JULIA_HOME);
 
     // Initialize Core.ARGS with the full argv.
