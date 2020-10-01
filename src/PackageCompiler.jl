@@ -171,7 +171,7 @@ function run_precompilation_script(project::String, sysimg::String, precompile_f
         arg = `$precompile_file`
     end
     touch(tracefile)
-    cmd = `$(get_julia_cmd()) --sysimage=$(sysimg) --project=$project
+    cmd = `$(get_julia_cmd()) -O1 --sysimage=$(sysimg) --project=$project
             --compile=all --trace-compile=$tracefile $arg`
     @debug "run_precompilation_script: running $cmd"
     read(cmd)
@@ -181,7 +181,7 @@ end
 # Load packages in a normal julia process to make them precompile "normally"
 function do_ensurecompiled(project, packages, sysimage)
     use = join("import " .* packages, '\n')
-    cmd = `$(get_julia_cmd()) --sysimage=$sysimage --project=$project -e $use`
+    cmd = `$(get_julia_cmd()) -O1 --sysimage=$sysimage --project=$project -e $use`
     @debug "running $cmd"
     read(cmd, String)
     return nothing
@@ -289,7 +289,7 @@ function create_sysimg_object_file(object_file::String, packages::Vector{String}
     @debug "creating object file at $object_file"
     @info "PackageCompiler: creating system image object file, this might take a while..."
 
-    cmd = `$(get_julia_cmd()) --cpu-target=$cpu_target
+    cmd = `$(get_julia_cmd()) -O1 --cpu-target=$cpu_target
                               --sysimage=$base_sysimage --project=$project --output-o=$(object_file) -e $julia_code`
     @debug "running $cmd"
     run(cmd)
